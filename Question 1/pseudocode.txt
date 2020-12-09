@@ -1,0 +1,28 @@
+int rings = input("Enter number of rings")
+
+int teeth_per_ring[9] = { 0 }
+
+FOR int i = 1 TO rings DO
+  int shouldLoop = 0
+
+  REPEAT
+    shouldLoop = 1
+    int last_teeth = -1
+
+    IF i != 1 THEN
+      // set value of last teeth
+      // this will throw an error if we are checking
+      // the first ring (we'd be trying to access ancan
+      // index in the array 1 higher than the max!)
+      last_teeth = teeth_per_ring[i - 1]
+    END IF
+
+    teeth_per_ring[i] = input("How many teeth are there in ring " + i)
+
+    IF (last_teeth != -1 AND teeth_per_ring[i] >= last_teeth) THEN
+      // amount of teeth larger than previous ring!
+      shouldLoop = 1
+      print("This ring must have fewer teeth than the last ring!")
+    END IF
+  UNTIL shouldLoop == 0
+NEXT i
