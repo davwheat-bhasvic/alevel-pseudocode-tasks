@@ -1,0 +1,72 @@
+int height = 10
+int width = 10
+
+char letters[26] = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+
+char Puzzle[height, width] = " "
+
+SUBROUTINE Insert(word, startCol, startRow, colChange, rowChange)
+  currentCol = startCol
+  currentRow = startRow
+  currentLetter = word[0]
+
+  FOR int i = 1 TO word.length DO
+    Puzzle[currentRow, currentCol] = currentLetter
+    currentCol = currentCol + colChange
+    currentRow = currentRow + rowChange
+  NEXT i
+END SUBROUTINE
+
+
+SUBROUTINE FillGrid()
+  FOR int row = 0 to (height - 1) DO
+    FOR int col = 0 to (width - 1) DO
+      IF (Puzzle[row, col] == " ") THEN
+        // generate num between 0 and 25 (incl.)
+        Puzzle[row, col] = letters[RANDOM(0, 25)]
+      END IF
+    NEXT row
+  NEXT col
+END SUBROUTINE
+
+
+SUBROUTINE Validate(word, startRow, startCol, rowChange, colChange)
+  int row = startRow
+  int col = startCol
+
+  FOR int x = 1 TO word.length DO
+    IF (row > height - 1 OR col > width - 1 OR row < 0 OR col < 0) THEN
+      // exceeded bounds
+      RETURN false
+    ELSE IF (Puzzle[row, col] != " ") THEN
+      // space occupied
+      RETURN false
+    END IF
+  NEXT x
+
+  RETURN true
+END SUBROUTINE
+
+
+bool shouldExit = false
+
+WHILE NOT shouldExit DO
+  word = input("Enter word: ")
+  x = input("Enter column (1-" + width + "): ")
+  y = input("Enter row (1-" + height + "): ")
+  xChange = input("Enter column change: ")
+  yChange = input("Enter row change: ")
+
+  IF NOT Validate(word, y - 1, x - 1, yChange, xChange) THEN
+    print("Invalid entry/entries! Not inserting.")
+    CONTINUE
+  END IF
+
+  Insert(word, y - 1, x - 1, yChange, xChange)
+
+  anotherWord = input("Another word? (Y/n)")
+
+  IF anotherWord == "n" THEN
+    shouldExit = true
+  END IF
+END WHILE
