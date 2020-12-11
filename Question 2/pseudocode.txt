@@ -1,40 +1,42 @@
 int seating[10, 15] = { 0 }
-
-int tickets = input("Enter number of tickets: ")
-
 char rowIds[10] = {"A","B","C","D","E","F","G","H","I","J"}
 
-IF tickets > 15 THEN
-  // we'll never find >15 seats in a row!
-  RETURN
-END IF
+// infinite loop because we want to be able to fill up the theatre!
+WHILE (TRUE) DO
+  int tickets = input("Enter number of tickets: ")
 
-FOR int row = 0 TO 9
-  int free_seats = 0
-  int shouldBreak = 0
-
-  FOR int seat = 0 TO 14
-    IF seating[row, seat] == 0 THEN
-      free_seats = free_seats + 1
-    ELSE
-      free_seats = 0
-    END IF
-
-    IF free_seats == tickets THEN
-      // found empty seat match
-      shouldBreak = 1
-      print("Best seats:")
-
-      // print seat row and number
-      FOR int i = free_seats to 0
-        print(rowIds[row] + (seat - i))
-      NEXT i
-
-      BREAK;
-    END IF
-  NEXT seat
-
-  IF shouldBreak == 1 THEN
-    BREAK
+  IF tickets > 15 THEN
+    // we'll never find >15 seats in a row!
+    RETURN
   END IF
-NEXT row
+
+  FOR int row = 0 TO 9
+    int free_seats = 0
+    int shouldBreak = 0
+
+    FOR int seat = 0 TO 14
+      IF seating[row, seat] == 0 THEN
+        free_seats = free_seats + 1
+      ELSE
+        free_seats = 0
+      END IF
+
+      IF free_seats == tickets THEN
+        // found empty seat match
+        shouldBreak = 1
+        print("Best seats:")
+
+        // print seat row and number
+        FOR int i = free_seats to 0
+          print(rowIds[row] + (seat - i))
+        NEXT i
+
+        BREAK;
+      END IF
+    NEXT seat
+
+    IF shouldBreak == 1 THEN
+      BREAK
+    END IF
+  NEXT row
+END WHILE
